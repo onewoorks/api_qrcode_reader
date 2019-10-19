@@ -2,6 +2,10 @@ from . import Models
 
 class CustomerModel:
 
+    def ReadCustomerById(self, customer_id):
+        query = "SELECT * FROM customer WHERE id = '{}' ".format(int(customer_id))
+        return Models().MySqlExecuteQuery(query)
+
     def ReadAllCustomer(self):
         query = "SELECT * FROM customer"
         return Models().MySqlExecuteQuery(query)
