@@ -11,18 +11,18 @@ class AttendanceServices:
             customers[key]['register_date'] = str(customers[key]['register_date'])
         return customers
 
-    def GetCustomerById(self, customer_id):
-        customer = CustomerModel().ReadCustomerById(customer_id)[0]
+    def read_customer_by_code(self, customer_id):
+        customer = CustomerModel().read_customer_by_code(customer_id)[0]
         customer['register_date'] = str(customer['register_date'])
         return customer
 
-    def CheckValidCustomer(self, customer_id):
-        customer = CustomerModel().CheckAttendRegistered(customer_id)[0]
+    def check_valid_customer(self, customer_id):
+        customer = CustomerModel().check_registered_customer(customer_id)[0]
         status = {}
         if customer['attend_status'] == 0:
             status['code']      = 991
             status['message']   = "Proceed To Confirmation"
-            status['detail']    = self.GetCustomerById(customer_id)
+            status['detail']    = self.read_customer_by_code(customer_id)
         else:
             customer['register_date'] = str(customer['register_date'])
             status['code']      = 900

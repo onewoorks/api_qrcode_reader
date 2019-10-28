@@ -11,7 +11,7 @@ api = Namespace("attendence",description="Attendence")
 class FindQRCodeRoute(Resource):
     @api.doc('Find customer detail by QR Code')
     def get(self, qr_code):
-        data = AttendanceServices().CheckValidCustomer(qr_code)
+        data = AttendanceServices().check_valid_customer(qr_code)
         return data
 
 info_attendance = api.model('Attendance Information',{
