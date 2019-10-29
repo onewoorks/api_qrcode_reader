@@ -5,12 +5,15 @@ import json
 
 class DashboardServices:
 
-    def GetStatistic(self):
-        total_zone = CustomerModel().ReadTotalSittingZone()
-        customers = CustomerModel().ReadAllCustomer()
-        attended = AttendedModel().ReadAttendedCustomer()
+    def get_statistic(self):
+        sitting = CustomerModel().read_sitting_zone_summary()
+        for sit in sitting:
+            sit['total_attend'] =  int(sit['total_attend'])
+        
+        # customers = CustomerModel().ReadAllCustomer()
+        # attended = AttendedModel().ReadAttendedCustomer()
         return {
-            "sitting_zone" : total_zone,
-            "customer" : json.loads(json.dumps(customers, default=str)),
-            "attended" : attended
+            "sitting_zone" : sitting,
+            # "customer" : json.loads(json.dumps(customers, default=str)),
+            # "attended" : attended
         }

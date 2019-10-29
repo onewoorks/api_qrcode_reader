@@ -14,9 +14,13 @@ class CustomerModel:
         query = "SELECT * FROM customer"
         return Models().MySqlExecuteQuery(query)
 
-    def ReadTotalSittingZone(self):
-        query = "SELECT sitting_zone, count(id) as total_registered_customer "
-        query += "FROM customer GROUP BY sitting_zone"
+    def read_sitting_zone_summary(self):
+        query = "SELECT c.sitting, "
+        query += "sum(IF(a.id is null, 0, 1)) as total_attend, "
+        query += "count(c.id) as total_registered "
+        query += "FROM customer_real c "
+        query += "LEFT JOIN attended a on c.id = a.customer_id "
+        query += "group by c.sitting "
         return Models().MySqlExecuteQuery(query)
     
     def CheckAttendRegistered(self, customer_id):
@@ -33,4 +37,8 @@ class CustomerModel:
         query += "FROM customer_real c "
         query += "LEFT JOIN attended a on c.id = a.customer_id "
         query += "WHERE c.code = '{}' ".format(str(code))
+        return Models().MySqlExecuteQuery(query)
+
+    def customer_summary(self):
+        query = "SELECT sitting FROM customer_real GROUP BY sitting"
         return Models().MySqlExecuteQuery(query)
