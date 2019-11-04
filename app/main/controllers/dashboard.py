@@ -2,6 +2,7 @@ from flask_restplus import Namespace, Resource, fields
 from flask import (Flask, Response)
 #
 from ..services.dashboard import DashboardServices
+from ..services.attendance import AttendanceServices
 
 import time, json, random
 
@@ -14,6 +15,25 @@ class DashboardStatisticRoute(Resource):
         data = DashboardServices().get_statistic()
         return data
 
+@api.route('/stream-stat')
+class DashboardStreatStatRoute(Resource):
+    def get(self):
+        return Response(self.event_stream(), mimetype="text/event-stream")
+    
+    def event_stream(self):
+        f = open('app/main/stream/attendee.txt', 'r')
+        attendance = []
+        attendee = f.readlines()
+        for a in attendee:
+            attendance.append(json.loads(a))
+        f.close()
+        open('app/main/stream/attendee.txt', 'w').close()
+        statistic = DashboardServices().get_statistic()
+        dashboard = {
+            "zone" : statistic['sitting_zone'],
+            "attendance" : attendance
+        }
+        yield "data: {}\n\n".format(json.dumps(dashboard))
 
 @api.route('/stream-test')
 class DashboardStreamTestRoute(Resource):
@@ -22,7 +42,7 @@ class DashboardStreamTestRoute(Resource):
         return Response(self.event_stream(), mimetype="text/event-stream")
 
     def event_stream(self):
-        print(self.statistic['sitting_zone'])
+        open('app/main/stream/demofile2.txt', 'w').close()
         while True:
             time.sleep(2)
             zone_a = random.randint(1,40)
@@ -66,5 +86,4 @@ class DashboardStreamTestRoute(Resource):
 
                 }
             }
-            # print("Sending {}".format(json.dumps(message)))
             yield "data: {}\n\n".format(json.dumps(message))

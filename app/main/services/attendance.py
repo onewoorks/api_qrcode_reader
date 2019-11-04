@@ -5,6 +5,15 @@ import json
 
 class AttendanceServices:
 
+    paging_total = 0
+
+    def add_total_attendance(self):
+        print('masuk je')
+        self.paging_total += 1
+
+    def get_current_stat(self):
+        return self.paging_total
+
     def GetAllCustomers(self):
         customers = CustomerModel().ReadAllCustomer()
         for key, value in enumerate(customers):
@@ -16,28 +25,48 @@ class AttendanceServices:
         customer['register_date'] = str(customer['register_date'])
         return customer
 
+    def read_customer_by_code_all(self, customer_id):
+        customer = CustomerModel().read_customer_by_code(customer_id)
+        for c in customer:
+            c['register_date'] = str(c['register_date'])
+        return customer
+
     def check_valid_customer(self, customer_id):
-        customer = CustomerModel().check_registered_customer(customer_id)[0]
+        customer = CustomerModel().check_registered_customer(customer_id)
         status = {}
-        if customer['attend_status'] == 0:
-            status['code']      = 991
-            status['message']   = "Proceed To Confirmation"
-            status['detail']    = self.read_customer_by_code(customer_id)
+
+        if len(customer) > 1 :
+            status['code']  = 950
+            status['message'] = "Proceed to Register Counter",
+            status['detail'] = "duplicate qrcode found!"
         else:
-            customer['register_date'] = str(customer['register_date'])
-            status['code']      = 900
-            status['message']   = "Attendance already recorded"
-            status['detail']    = customer
+            if customer[0]['attend_status'] == 0:
+                status['code']      = 991
+                status['message']   = "Proceed To Confirmation"
+                status['detail']    = self.read_customer_by_code(customer_id)
+            else:
+                customer['register_date'] = str(customer['register_date'])
+                status['code']      = 900
+                status['message']   = "Attendance already recorded"
+                status['detail']    = customer 
         return status
 
 
-    def PostAttendanceConfirmation(self, input_data):
+    def post_attendance_confirmation(self, input_data):
         payloads = {
             "customer_id"   : input_data['id_number'],
             "counter_id"    : input_data['reader_counter'],
             "reader_payloads" : json.dumps(input_data)
         }
         AttendedModel().CreateConfirmAttend(payloads)
+        self.__write_stream_attendee(payloads)
         return {
             "status" : "Data registered"
         }
+
+    def __write_stream_attendee(self, payloads):
+        f = open("app/main/stream/attendee.txt", "a+")
+        data = json.loads(payloads['reader_payloads'])
+        data['attend_time'] = "2019-11-02 05:39:20"
+        f.write(json.dumps(data)+"\n")
+        f.close()

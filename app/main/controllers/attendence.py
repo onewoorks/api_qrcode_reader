@@ -7,6 +7,12 @@ import time, json
 
 api = Namespace("attendence",description="Attendence")
 
+@api.route('/find-all/<qr_code>')
+class AttendanceFindAllRoute(Resource):
+    def get(self, qr_code):
+        data = AttendanceServices().read_customer_by_code_all(qr_code)
+        return data
+
 @api.route('/find/<qr_code>')
 class FindQRCodeRoute(Resource):
     @api.doc('Find customer detail by QR Code')
@@ -30,7 +36,7 @@ class AttendRoute(Resource):
     @api.doc(parser=info_attendance)
     def post(self):
         input_data  = json.loads(request.data)
-        response = AttendanceServices().PostAttendanceConfirmation(input_data)
+        response = AttendanceServices().post_attendance_confirmation(input_data)
         return response
 
 @api.route('/stream')

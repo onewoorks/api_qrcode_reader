@@ -7,7 +7,7 @@ class AttendedModel:
         query += "("
         query += "'{}', ".format(payloads['customer_id'])
         query += "'{}', ".format(payloads['counter_id'])
-        query += "'{}'".format(payloads['reader_payloads'])
+        query += "'{}'".format(payloads['reader_payloads'].replace("'","''"))
         query += ")"
         Models().MysqlInsertQuery(query)
 

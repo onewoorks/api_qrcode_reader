@@ -7,13 +7,12 @@ class DashboardServices:
 
     def get_statistic(self):
         sitting = CustomerModel().read_sitting_zone_summary()
+        sit_zone = {}
         for sit in sitting:
-            sit['total_attend'] =  int(sit['total_attend'])
-        
-        # customers = CustomerModel().ReadAllCustomer()
-        # attended = AttendedModel().ReadAttendedCustomer()
+            sit_zone[sit['sitting']] = {
+                "attend"    : "{:,.0f}".format(sit['total_attend']),
+                "total"     : "{:,.0f}".format(sit['total_registered'])
+            }
         return {
-            "sitting_zone" : sitting,
-            # "customer" : json.loads(json.dumps(customers, default=str)),
-            # "attended" : attended
+            "sitting_zone" : sit_zone,
         }
