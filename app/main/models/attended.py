@@ -17,3 +17,9 @@ class AttendedModel:
         query += "FROM attended "
         query += "GROUP BY reader_payloads->>\"$.sitting_zone\" "
         return Models().MySqlExecuteQuery(query)
+
+    def get_attended_list(self, zone):
+        query = "SELECT date_format(timestamp,'%d/%m/%Y %H:%i:%s') as clock_in, "
+        query += "reader_payloads "
+        query += "FROM attended WHERE reader_payloads->>'$.sitting_zone' = '{}'".format(zone)
+        return Models().MySqlExecuteQuery(query)

@@ -16,3 +16,14 @@ class DashboardServices:
         return {
             "sitting_zone" : sit_zone,
         }
+
+    def get_sitting_zone_list(self, zone):
+        attendee = AttendedModel().get_attended_list(zone)
+        attendee_list = []
+        for a in attendee:
+            data = json.loads(a['reader_payloads'])
+            data['clock_in'] = str(a['clock_in'])
+            attendee_list.append(data)
+        return {
+            "sitting_zone_list" : attendee_list
+        }

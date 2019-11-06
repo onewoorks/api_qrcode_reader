@@ -15,6 +15,27 @@ class DashboardStatisticRoute(Resource):
         data = DashboardServices().get_statistic()
         return data
 
+@api.route('/sitting-zone/<sitting_zone>')
+class DashboardSittingZoneRoute(Resource):
+    def get(self, sitting_zone):
+        data = DashboardServices().get_sitting_zone_list(sitting_zone)
+        return data
+
+    def event_stream(self):
+        f = open('app/main/stream/attendee_zone.txt', 'r')
+        attendance = []
+        attendee = f.readlines()
+        for a in attendee:
+            attendance.append(json.loads(a))
+        f.close()
+        open('app/main/stream/attendee.txt', 'w').close()
+        statistic = DashboardServices().get_statistic()
+        dashboard = {
+            "zone" : statistic['sitting_zone'],
+            "attendance" : attendance
+        }
+        yield "data: {}\n\n".format(json.dumps(dashboard))
+
 @api.route('/stream-stat')
 class DashboardStreatStatRoute(Resource):
     def get(self):
