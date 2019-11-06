@@ -1,6 +1,7 @@
 from ..models.customer import CustomerModel
 from ..models.attended import AttendedModel
 
+from datetime import datetime
 import json
 
 class AttendanceServices:
@@ -67,6 +68,6 @@ class AttendanceServices:
     def __write_stream_attendee(self, payloads):
         f = open("app/main/stream/attendee.txt", "a+")
         data = json.loads(payloads['reader_payloads'])
-        data['attend_time'] = "2019-11-02 05:39:20"
+        data['attend_time'] = str(datetime.now()).split(".")[0]
         f.write(json.dumps(data)+"\n")
         f.close()
