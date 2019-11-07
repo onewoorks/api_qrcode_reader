@@ -23,3 +23,12 @@ class AttendedModel:
         query += "reader_payloads "
         query += "FROM attended WHERE reader_payloads->>'$.sitting_zone' = '{}'".format(zone)
         return Models().MySqlExecuteQuery(query)
+
+    def get_customer_filter(self, filter_data):
+        query = "SELECT * FROM customer_real "
+        query += "WHERE 1 "
+        query += "AND CODE = '{}' ".format(filter_data['qr_code']) if filter_data['qr_code'] != None else ""
+        query += "AND phone LIKE \"%{}\" ".format(filter_data['phone']) if filter_data['phone'] != None else ""
+        query += "AND NAME LIKE \"%{}%\" ".format(filter_data['name']) if filter_data['name'] != None else ""
+        query += "AND email LIKE '%{}' AND ".format(filter_data['email'])  if filter_data['email'] != None else ""
+        return Models().MySqlExecuteQuery(query)

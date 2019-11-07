@@ -65,6 +65,28 @@ class AttendanceServices:
             "status" : "Data registered"
         }
 
+    def post_filter_registered_customer(self, filter_data):
+        valid = False
+        for fd in filter_data:
+            if fd == "qr_code":
+                if len(filter_data[fd]) > 0 :
+                    valid = True
+                else:
+                    filter_data[fd] = None
+            else:
+                if len(filter_data[fd]) > 4:
+                    valid = True
+                else:
+                    filter_data[fd] = None
+        if valid == True:
+            found = AttendedModel().get_customer_filter(filter_data)
+            result = found if len(found) > 0 else {"status":"No entry found!!!"}
+        else:
+            result = {
+                "status" : "No entry found!!!"
+            }
+        return result
+
     def __write_stream_attendee(self, payloads):
         f = open("app/main/stream/attendee.txt", "a+")
         data = json.loads(payloads['reader_payloads'])

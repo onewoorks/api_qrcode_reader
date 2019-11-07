@@ -20,6 +20,19 @@ class FindQRCodeRoute(Resource):
         data = AttendanceServices().check_valid_customer(qr_code)
         return data
 
+model_filter = api.model('Filter Information',{
+    "name"      : fields.String(description="Registered Name"),
+    "qr_code"   : fields.String(description="QR Code"),
+    "email"     : fields.String(description="Registered Email"),
+    "phone"     : fields.String(description="Registered Phone No")
+})
+@api.route('/find-filter')
+class AttendanceFindFilter(Resource):
+    def post(self):
+        input_data = json.loads(request.data)
+        response = AttendanceServices().post_filter_registered_customer(input_data)
+        return response
+
 info_attendance = api.model('Attendance Information',{
     "customer_name"     : fields.String(description="Customer Name"),
     "customer_phone_no" : fields.String(description="Customer Phone No"),
@@ -38,6 +51,16 @@ class AttendRoute(Resource):
         input_data  = json.loads(request.data)
         response = AttendanceServices().post_attendance_confirmation(input_data)
         return response
+    
+@api.route('/attend-manual')
+class AttendRoute(Resource):
+    @api.doc('Registrant confirm their attendance')
+    @api.doc(parser=info_attendance)
+    def post(self):
+        print(json.loads(request.data))
+        # input_data  = json.loads(request.data)
+        # response = AttendanceServices().post_attendance_confirmation(input_data)
+        return json.loads(request.data)
 
 @api.route('/stream')
 class StreamRoute(Resource):
