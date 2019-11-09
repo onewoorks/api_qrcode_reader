@@ -21,6 +21,7 @@ class CustomerModel:
         query += "FROM customer_real c "
         query += "LEFT JOIN attended a on c.id = a.customer_id "
         query += "group by c.sitting "
+        print(query)
         return Models().MySqlExecuteQuery(query)
     
     def CheckAttendRegistered(self, customer_id):

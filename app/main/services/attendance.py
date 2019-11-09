@@ -71,6 +71,7 @@ class AttendanceServices:
 
     def post_filter_registered_customer(self, filter_data):
         valid = False
+        print(filter_data)
         for fd in filter_data:
             if fd == "qr_code":
                 if len(filter_data[fd]) > 0 :
