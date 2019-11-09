@@ -8,11 +8,19 @@ class DashboardServices:
     def get_statistic(self):
         sitting = CustomerModel().read_sitting_zone_summary()
         sit_zone = {}
+        total_attend = 0
+        total_total = 0
         for sit in sitting:
             sit_zone[sit['sitting']] = {
                 "attend"    : "{:,.0f}".format(sit['total_attend']),
                 "total"     : "{:,.0f}".format(sit['total_registered'])
             }
+            total_attend += sit['total_attend']
+            total_total += sit['total_registered']
+        sit_zone['total'] = {
+            "attend": "{:,.0f}".format(total_attend),
+            "total" : "{:,.0f}".format(total_total)
+        }
         return {
             "sitting_zone" : sit_zone,
         }

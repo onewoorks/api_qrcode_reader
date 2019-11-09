@@ -1,1 +1,0 @@
-{"id": 3764, "code": "0", "name": "MOHAMAD NUR AISAR BIN AZEMA  ", "phone": "60148676036", "email": "aisarazema@gmail.com.my", "se_id": "0", "sitting": "E", "register_date": "30/05/2026 11:08", "csv_group": "free_device", "id_number": 3764, "reader_counter": "manual-counter", "attend_time": "2019-11-07 23:12:32"}

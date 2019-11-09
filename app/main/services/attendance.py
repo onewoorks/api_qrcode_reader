@@ -35,21 +35,25 @@ class AttendanceServices:
     def check_valid_customer(self, customer_id):
         customer = CustomerModel().check_registered_customer(customer_id)
         status = {}
-
         if len(customer) > 1 :
             status['code']  = 950
             status['message'] = "Proceed to Register Counter",
             status['detail'] = "duplicate qrcode found!"
         else:
-            if customer[0]['attend_status'] == 0:
-                status['code']      = 991
-                status['message']   = "Proceed To Confirmation"
-                status['detail']    = self.read_customer_by_code(customer_id)
+            if 0 < len(customer):
+                if customer[0]['attend_status'] == 0:
+                    status['code']      = 991
+                    status['message']   = "Proceed To Confirmation"
+                    status['detail']    = self.read_customer_by_code(customer_id)
+                else:
+                    customer['register_date'] = str(customer['register_date'])
+                    status['code']      = 900
+                    status['message']   = "Attendance already recorded"
+                    status['detail']    = customer 
             else:
-                customer['register_date'] = str(customer['register_date'])
-                status['code']      = 900
-                status['message']   = "Attendance already recorded"
-                status['detail']    = customer 
+                status['code']     = 950
+                status['message']  = "QR Code not found!!"
+                status['detail']   = ""
         return status
 
 

@@ -58,9 +58,11 @@ class AttendRoute(Resource):
     @api.doc(parser=info_attendance)
     def post(self):
         print(json.loads(request.data))
-        # input_data  = json.loads(request.data)
-        # response = AttendanceServices().post_attendance_confirmation(input_data)
-        return json.loads(request.data)
+        input_data  = json.loads(request.data)
+        input_data['customer_name'] = input_data['name']
+        input_data['sitting_zone'] = input_data['sitting']
+        response = AttendanceServices().post_attendance_confirmation(input_data)
+        return response
 
 @api.route('/stream')
 class StreamRoute(Resource):
