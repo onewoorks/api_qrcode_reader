@@ -34,3 +34,6 @@ class Models:
         cursor = db.cursor()
         cursor.execute(query)
         cursor.close()
+
+    def execute_bulk_insert(self, bulk_insert):
+        self.MysqlInsertQuery(bulk_insert)
