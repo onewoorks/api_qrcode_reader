@@ -4,7 +4,7 @@ load_dotenv()
 
 class Models:
 
-    def MySqlExecuteQuery(self, query):
+    def mysql_execute_query(self, query):
         db = pymysql.connect(
             host=os.getenv('DB_MYSQL_HOST'),
             port=int(os.getenv('DB_MYSQL_PORT')),
@@ -20,7 +20,7 @@ class Models:
         cursor.close()
         return data
     
-    def MysqlInsertQuery(self, query):
+    def mysql_insert_query(self, query):
         db = pymysql.connect(
             host=os.getenv('DB_MYSQL_HOST'),
             port=int(os.getenv('DB_MYSQL_PORT')),
@@ -36,4 +36,4 @@ class Models:
         cursor.close()
 
     def execute_bulk_insert(self, bulk_insert):
-        self.MysqlInsertQuery(bulk_insert)
+        self.mysql_insert_query(bulk_insert)

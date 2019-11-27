@@ -25,4 +25,4 @@ class RegisteredPersonModel:
         query += "from registered_person p "
         query += "left join event_detail e ON e.id = p.event_id "
         query += "where p.register_code = '{}' ".format(register_code)
-        return Models().MySqlExecuteQuery(query)
+        return Models().mysql_execute_query(query)
