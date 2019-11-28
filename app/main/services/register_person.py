@@ -18,7 +18,7 @@ class RegisterPersonServices:
         str_output = []
         for r in responses:
             r['timestamp']  = str(r['timestamp'])
-            r['qr_code']   = str(r['event_code']) + ' - ' + str(r['id']).zfill(5)
+            r['qr_code']   = str(r['event_ref']) + ' - ' + str(r['id']).zfill(5)
             r['charges']    = self.__show_charges(json.loads(r['charges']), r['register_mode'])
             str_output.append(r)
         return str_output
