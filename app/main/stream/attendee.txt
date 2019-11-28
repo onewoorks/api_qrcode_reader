@@ -1,0 +1,1 @@
+{"customer_name": "IRWAN IBRAHIM", "customer_phone_no": "+60126693481", "email": "hello@onewoorks.com", "register_date": "2019-11-28 10:57:40", "reader_counter": null, "sitting_zone": "Oyosho VIP Rock Zone", "id_number": "22", "qr_code": "22", "attend_time": "2019-11-28 23:33:30"}

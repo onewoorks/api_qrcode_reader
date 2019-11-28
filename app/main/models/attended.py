@@ -11,6 +11,18 @@ class AttendedModel:
         query += ")"
         Models().mysql_insert_query(query)
 
+    def create_confirm_trail(self, payloads):
+        query = "INSERT INTO reader_trail (reader_payloads) VALUE "
+        query += "("
+        query += "'{}'".format(payloads['reader_payloads'].replace("'","''"))
+        query += ")"
+        Models().mysql_insert_query(query)
+        self.__update_person_status(payloads['customer_id'])
+
+    def __update_person_status(self, id):
+        query = "UPDATE registered_person SET current_status = current_status + 1 WHERE id = {} ".format(int(id))
+        Models().mysql_insert_query(query)
+
     def ReadAttendedCustomer(self):
         query = "SELECT count(id) AS total, "
         query += "reader_payloads->>\"$.sitting_zone\" AS sitting_zone "

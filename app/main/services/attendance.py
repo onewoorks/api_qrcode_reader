@@ -68,6 +68,17 @@ class AttendanceServices:
             "status" : "Data registered"
         }
 
+    def post_confirmation_trail(self, input_data):
+        payloads = {
+            "customer_id"   : input_data['id_number'],
+            "reader_payloads" : json.dumps(input_data)
+        }
+        AttendedModel().create_confirm_trail(payloads)
+        return {
+            "status" : "Trail Registered"
+        }
+    
+
     def post_filter_registered_customer(self, filter_data):
         valid = False
         for fd in filter_data:
