@@ -26,3 +26,11 @@ class RegisteredPersonModel:
         query += "left join event_detail e ON e.id = p.event_id "
         query += "where p.register_code = '{}' ".format(register_code)
         return Models().mysql_execute_query(query)
+
+    def get_register_count(self):
+        query = "SELECT "
+        query += "current_status "
+        query += ", COUNT(id) AS total "
+        query += "FROM registered_person "
+        query += "GROUP BY current_status "
+        return Models().mysql_execute_query(query)
