@@ -2,6 +2,7 @@ from flask_restplus import Namespace, Resource, fields
 from flask import Response, request
 
 from ..services.attendance import AttendanceServices
+from ..services.register_person import RegisterPersonServices
 
 import time, json
 
@@ -26,6 +27,14 @@ model_filter = api.model('Filter Information',{
     "email"     : fields.String(description="Registered Email"),
     "phone"     : fields.String(description="Registered Phone No")
 })
+
+@api.route('/find-person/<qr_code>')
+class FindQRCodeRoute(Resource):
+    @api.doc('Find customer detail by QR Code')
+    def get(self, qr_code):
+        data = RegisterPersonServices().check_valid_person(qr_code)
+        return data
+
 @api.route('/find-filter')
 class AttendanceFindFilter(Resource):
     def post(self):
@@ -50,6 +59,15 @@ class AttendRoute(Resource):
     def post(self):
         input_data  = json.loads(request.data)
         response = AttendanceServices().post_attendance_confirmation(input_data)
+        return response
+
+@api.route('/next-status')
+class AttendRoute(Resource):
+    @api.doc('Next Status Confirmation')
+    @api.doc(parser=info_attendance)
+    def post(self):
+        input_data  = json.loads(request.data)
+        response = AttendanceServices().post_confirmation_trail(input_data)
         return response
     
 @api.route('/attend-manual')

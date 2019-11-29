@@ -34,3 +34,7 @@ class RegisteredPersonModel:
         query += "FROM registered_person "
         query += "GROUP BY current_status "
         return Models().mysql_execute_query(query)
+
+    def get_register_person(self, id, register_code):
+        query = "SELECT * FROM registered_person WHERE id = {} AND register_code = '{}' ".format(int(id), register_code)
+        return Models().mysql_execute_query(query)
