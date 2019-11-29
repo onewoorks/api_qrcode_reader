@@ -38,11 +38,17 @@ class DashboardServices:
         }
 
     def get_manual_register(self):
-        registered = RegisteredPersonModel().get_register_count()
+        
         register_stat = []
-        for r in registered:
+        for r in range(4):
+            registered = RegisteredPersonModel().get_register_count(r)
             result = {
-                r['current_status'] : r['total']
+                "status": r,
+                "total" : registered[0]['total'],
+                "vip" : "{0:,.0f}".format(int(registered[0]['vip']) if registered[0]['vip'] != None else 0),
+                "normal" : "{0:,.0f}".format(int(registered[0]['normal']) if registered[0]['normal'] != None else 0),
+                "clean_vip": int(registered[0]['vip']  if registered[0]['vip'] != None else 0),
+                "clean_normal" : int(registered[0]['normal']  if registered[0]['normal'] != None else 0)
             }
             register_stat.append(result)
         return register_stat
