@@ -56,6 +56,18 @@ class DashboardStreatStatRoute(Resource):
         }
         yield "data: {}\n\n".format(json.dumps(dashboard))
 
+@api.route('/stream-manual-register')
+class DashboardStreatStatRoute(Resource):
+    def get(self):
+        return Response(self.event_stream(), mimetype="text/event-stream")
+    
+    def event_stream(self):
+        statistic = DashboardServices().get_manual_register()
+        dashboard = {
+            "statistic" : statistic
+        }
+        yield "data: {}\n\n".format(json.dumps(dashboard))
+
 @api.route('/stream-test')
 class DashboardStreamTestRoute(Resource):
     statistic = DashboardServices().get_statistic()

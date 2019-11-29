@@ -1,5 +1,6 @@
 from ..models.customer import CustomerModel
 from ..models.attended import AttendedModel
+from ..models.registered_person import RegisteredPersonModel
 
 import json
 
@@ -35,3 +36,13 @@ class DashboardServices:
         return {
             "sitting_zone_list" : attendee_list
         }
+
+    def get_manual_register(self):
+        registered = RegisteredPersonModel().get_register_count()
+        register_stat = []
+        for r in registered:
+            result = {
+                r['current_status'] : r['total']
+            }
+            register_stat.append(result)
+        return register_stat

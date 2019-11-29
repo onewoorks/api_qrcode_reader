@@ -15,9 +15,14 @@ class EventDetailServices:
     def get_event_detail_by_code(self, event_code):
         response = EventDetailModel().get_event_detail_by_code(event_code)
         output = []
-        for r in response:
-            r['timestamp']  = str(r['timestamp'])
-            r['charges']    = json.loads(r['charges']) 
-            r['event_info'] = json.loads(r['event_info'])
-            output.append(r)
+        if len(response)>0:
+            for r in response:
+                r['timestamp']  = str(r['timestamp'])
+                r['charges']    = json.loads(r['charges']) 
+                r['event_info'] = json.loads(r['event_info'])
+                output.append(r)
+        else:
+            output.append({
+                "message" : "no event found!!"
+            })
         return output[0]
