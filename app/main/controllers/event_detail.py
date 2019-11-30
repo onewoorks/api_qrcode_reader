@@ -10,6 +10,11 @@ class EventDetailRoute(Resource):
     def get(self, event_id):
         return EventDetailServices().get_event_detail(event_id)
 
+@api.route('/event-2/<event_id>')
+class EventDetailRoute(Resource):
+    def get(self, event_id):
+        return EventDetailServices().get_event_detail_2(event_id)
+
 @api.route('/info/<event_code>')
 class EventDetailRoute(Resource):
     def get(self, event_code):

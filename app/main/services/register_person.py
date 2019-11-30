@@ -13,6 +13,16 @@ class RegisterPersonServices:
             registered_model.create_new_person(payload)
         return self.register_response_code(register_code)
 
+    def register_tukar_nama(self, payloads):
+        registered_model    = RegisteredPersonModel()
+        register_code       = str(round(time.time() * 1000))
+        # for payload in payloads:
+        payloads['qr_code']        = payloads['ticket_id']
+        payloads['register_code']  = register_code
+        payloads['mode'] = 'Tukar Nama'
+        registered_model.create_tukar_nama(payloads)
+        return self.register_response_code(register_code)
+
     def register_response_code(self, register_code):
         responses = RegisteredPersonModel().get_registered_person(register_code)
         str_output = []

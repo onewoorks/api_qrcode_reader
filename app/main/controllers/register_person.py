@@ -24,6 +24,13 @@ class NewDataRoute(Resource):
         response    = RegisterPersonServices().register_new_person(input_data)
         return response
 
+@api.route('/tukar-nama')
+class TukarNamaRoute(Resource):
+    def post(self):
+        input_data = json.loads(request.data)
+        response = RegisterPersonServices().register_tukar_nama(input_data)
+        return response
+
 @api.route('/register-code/<register_code>')
 class RegisterCodeRoute(Resource):
     def get(self, register_code):

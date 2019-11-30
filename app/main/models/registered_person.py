@@ -17,6 +17,21 @@ class RegisteredPersonModel:
         query += "); "
         return Models().execute_bulk_insert(query)
 
+    def create_tukar_nama(self, person_data):
+        query = "INSERT INTO registered_person "
+        query += "(timestamp, fullname, identification_no, phone_no, email, event_id,"
+        query += "qr_code, register_code, register_mode) VALUE ( now(), "
+        query += "'{}', ".format(person_data['fullname'])
+        query += "'{}', ".format(person_data['identification_no'])
+        query += "'{}', ".format(person_data['phone_no'])
+        query += "'{}', ".format(person_data['email'])
+        query += "'{}', ".format(person_data['event_id'])
+        query += "'{}', ".format(person_data['qr_code'])
+        query += "'{}', ".format(person_data['register_code'])
+        query += "'{}' ".format(person_data['mode'])
+        query += "); "
+        return Models().execute_bulk_insert(query)
+
     def get_registered_person(self, register_code):
         query = "SELECT p.*, "
         query += "e.event_code, "
