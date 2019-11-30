@@ -1,16 +1,11 @@
 FROM python:3.7
 
-COPY . /srv/flask_app
-WORKDIR /srv/flask_app
+WORKDIR /usr/src/app
 
-RUN apt-get clean \
-    && apt-get -y update
-RUN apt-get -y install nginx \
-    && apt-get -y install python3-dev \
-    && apt-get -y install build-essential
+COPY requirements.txt ./
 
-RUN pip install -r requirements.txt --src /usr/local/src
+RUN pip install --no-cache-dir -r requirements.txt
 
-COPY nginx.conf /etc/nginx
-RUN chmod +x ./start.sh
-CMD ["./start.sh"]
+COPY . .
+
+CMD ["python","./index.py"]

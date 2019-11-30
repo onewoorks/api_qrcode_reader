@@ -69,7 +69,7 @@ class DashboardStreatStatRoute(Resource):
         for s in statistic:
             if s['status'] > 1:
                 paid_vip += s['clean_vip'] * 135
-                paid_normal += s['clean_normal'] * 50
+                paid_normal += s['clean_normal'] * 80
                 total_paid += 1
 
         dashboard = {
