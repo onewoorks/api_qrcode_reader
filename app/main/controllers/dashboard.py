@@ -63,8 +63,22 @@ class DashboardStreatStatRoute(Resource):
     
     def event_stream(self):
         statistic = DashboardServices().get_manual_register()
+        paid_vip = 0
+        paid_normal = 0
+        total_paid = 0
+        for s in statistic:
+            if s['status'] > 1:
+                paid_vip += s['clean_vip'] * 135
+                paid_normal += s['clean_normal'] * 80
+                total_paid += 1
+
         dashboard = {
-            "statistic" : statistic
+            "statistic" : statistic,
+            "collection" : {
+                "total": total_paid,
+                "vip": paid_vip,
+                "normal": paid_normal
+            }
         }
         yield "data: {}\n\n".format(json.dumps(dashboard))
 

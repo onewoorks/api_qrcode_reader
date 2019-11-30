@@ -42,12 +42,15 @@ class RegisteredPersonModel:
         query += "where p.register_code = '{}' ".format(register_code)
         return Models().mysql_execute_query(query)
 
-    def get_register_count(self):
+    def get_register_count(self, current_status):
         query = "SELECT "
-        query += "current_status "
+        query += "'{}' as current_status ".format(current_status)
         query += ", COUNT(id) AS total "
+        query += ", SUM(IF(register_mode = 'Oyoshi VIP Rock Zone', 1,0)) AS vip "
+        query += ", SUM(IF(register_mode = 'Oyoshi Zone', 1,0)) AS normal "
         query += "FROM registered_person "
-        query += "GROUP BY current_status "
+        if(current_status != 0):
+            query += "WHERE current_status = '{}' ".format(current_status)
         return Models().mysql_execute_query(query)
 
     def get_register_person(self, id, register_code):

@@ -1,4 +1,4 @@
-FROM python:3.7
+FROM python:latest
 
 WORKDIR /usr/src/app
 
@@ -8,4 +8,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-CMD ["python","./index.py"]
+CMD ["python","./root.py"]
