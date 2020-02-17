@@ -5,7 +5,7 @@ class RegisteredPersonModel:
     def create_new_person(self, person_data):
         query = "INSERT INTO registered_person "
         query += "(timestamp, fullname, identification_no, phone_no, email, event_id,"
-        query += "qr_code, register_code, register_mode) VALUE ( now(), "
+        query += "qr_code, register_code, register_mode, others) VALUE ( now(), "
         query += "'{}', ".format(person_data['fullname'])
         query += "'{}', ".format(person_data['identification_no'])
         query += "'{}', ".format(person_data['phone_no'])
@@ -13,7 +13,8 @@ class RegisteredPersonModel:
         query += "'{}', ".format(person_data['event_id'])
         query += "'{}', ".format(person_data['qr_code'])
         query += "'{}', ".format(person_data['register_code'])
-        query += "'{}' ".format(person_data['ticket_price']['mode'])
+        query += "'{}', ".format(person_data['ticket_price']['mode'])
+        query += "'{}' ".format(person_data['remark'])
         query += "); "
         return Models().execute_bulk_insert(query)
 
