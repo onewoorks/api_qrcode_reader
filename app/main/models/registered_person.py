@@ -3,6 +3,10 @@ from . import Models
 class RegisteredPersonModel:
 
     def create_new_person(self, person_data):
+        remark = ' '
+        if 'remark' in person_data:
+            remark = person_data['remark']
+        print(remark)
         query = "INSERT INTO registered_person "
         query += "(timestamp, fullname, identification_no, phone_no, email, event_id,"
         query += "qr_code, register_code, register_mode, others) VALUE ( now(), "
@@ -14,7 +18,7 @@ class RegisteredPersonModel:
         query += "'{}', ".format(person_data['qr_code'])
         query += "'{}', ".format(person_data['register_code'])
         query += "'{}', ".format(person_data['ticket_price']['mode'])
-        query += "'{}' ".format(person_data['remark'])
+        query += "'{}' ".format(remark)
         query += "); "
         return Models().execute_bulk_insert(query)
 
